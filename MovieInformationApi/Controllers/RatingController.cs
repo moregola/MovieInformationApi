@@ -54,7 +54,7 @@ namespace MovieInformationApi.Controllers
         {
             try
             {
-                var actor = await _movieRatingService.GetAsync(id);
+                var actor = await _movieRatingService.GetByMovieId(id);
                 return new OkObjectResult(actor);
             }
             catch (Exception ex)

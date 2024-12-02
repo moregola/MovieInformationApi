@@ -14,13 +14,19 @@ namespace Infra.BuildConfig
                 cfg.AllowNullCollections = true;
 
                 cfg.CreateMap<Actor, ActorEntity>()
-                    .ReverseMap();
-                
-                cfg.CreateMap<Movie, MovieEntity>()
-                    .ReverseMap();
+                .ForMember(e => e.CreateDate, opt => opt.Ignore())
+                .ForMember(e => e.UpdateDate, opt => opt.Ignore())
+                .ReverseMap();
 
-                cfg.CreateMap<MovieRating, MovieEntity>()
-                    .ReverseMap();
+                cfg.CreateMap<Movie, MovieEntity>()
+                .ForMember(e => e.CreateDate, opt => opt.Ignore())
+                .ForMember(e => e.UpdateDate, opt => opt.Ignore())
+                .ReverseMap();
+
+                cfg.CreateMap<MovieRating, MovieRatingEntity>()
+                .ForMember(e => e.CreateDate, opt => opt.Ignore())
+                .ForMember(e => e.UpdateDate, opt => opt.Ignore())
+                .ReverseMap();
             });
 
             config.AssertConfigurationIsValid();
