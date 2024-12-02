@@ -2,7 +2,7 @@
 
 namespace Application.Service.Interface
 {
-    internal interface IActorService : IBaseService<Actor>
+    public interface IActorService : IBaseService<Actor>
     {
     }
 }

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Repository.Interface
+namespace Infra.Repository.Interface
 {
-    internal interface IActorRepository : IBaseRepository<ActorEntity>
+    public interface IActorRepository : IBaseRepository<ActorEntity>
     {
     }
 }

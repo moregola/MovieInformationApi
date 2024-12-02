@@ -2,7 +2,7 @@
 
 namespace Application.Service.Interface
 {
-    internal interface IMovieService : IBaseService<Movie>
+    public interface IMovieService : IBaseService<Movie>
     {
     }
 }

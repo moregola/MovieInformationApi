@@ -23,7 +23,6 @@ namespace Infra.BuildConfig
                     .ReverseMap();
             });
 
-
             config.AssertConfigurationIsValid();
             IMapper mapper = config.CreateMapper();
             serviceCollection.AddSingleton(mapper);

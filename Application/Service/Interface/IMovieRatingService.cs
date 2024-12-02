@@ -2,7 +2,8 @@
 
 namespace Application.Service.Interface
 {
-    internal interface IMovieRatingService : IBaseService<MovieRating>
+    public interface IMovieRatingService : IBaseService<MovieRating>
     {
+        Task<MovieRating> GetByMovieId(Guid MovieId);
     }
 }
