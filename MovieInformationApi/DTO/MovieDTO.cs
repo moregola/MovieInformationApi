@@ -10,5 +10,6 @@
         public DateTime ReleaseDate { get; set; }
         public string Description { get; set; } = string.Empty;
         public RatingDTO MovieRating { get; set; }
+        public string Photo { get; set; } = string.Empty;
     }
 }

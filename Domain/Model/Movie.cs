@@ -17,5 +17,6 @@
         public string Description { get; set; } = string.Empty;
         public List<Actor> Actors { get; set; } = new List<Actor>();
         public MovieRating MovieRating { get; set; }
+        public string Photo { get; set; } = string.Empty;
     }
 }

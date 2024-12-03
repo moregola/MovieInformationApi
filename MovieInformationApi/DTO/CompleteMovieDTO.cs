@@ -13,5 +13,6 @@ namespace MovieInformationApi.DTO
         public string Description { get; set; } = string.Empty;
         public ICollection<ActorDTO> Actors { get; set; }
         public RatingDTO MovieRating { get; set; }
+        public string Photo { get; set; } = string.Empty;
     }
 }

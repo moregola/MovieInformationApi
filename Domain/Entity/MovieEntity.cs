@@ -16,6 +16,6 @@ namespace Domain.Entity
         public DateTime ReleaseDate { get; set; }
         public string Description { get; set; } = string.Empty;
         public MovieRatingEntity MovieRating { get; set; }
-
+        public string Photo { get; set; } = string.Empty;
     }
 }

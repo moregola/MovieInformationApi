@@ -29,5 +29,6 @@ namespace Domain.Model
             Age = (DateTime.Now.Year - BirthDate.Year) 
                 + (DateTime.Now.Month - BirthDate.Month > 0 ? 0 : -1);
         }
+        public string Photo { get; set; } = string.Empty;
     }
 }

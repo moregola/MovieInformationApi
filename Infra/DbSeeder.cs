@@ -47,7 +47,8 @@ namespace Infra
                             BirthDate = new DateTime(1956, 07, 04),
                             City = "Concord",
                             State = "Califórnia",
-                            Country = "Estados Unidos"
+                            Country = "Estados Unidos",
+                            Photo = "https://pt.wikipedia.org/wiki/Tom_Hanks#/media/Ficheiro:Tom_Hanks_2016.jpg"
                         },
                         new ActorEntity
                         {
@@ -56,9 +57,11 @@ namespace Infra
                             BirthDate = new DateTime(1970, 10, 08),
                             City = "Boston",
                             State = "Massachusetts",
-                            Country = "Estados Unidos"
+                            Country = "Estados Unidos",
+                            Photo = "https://pt.wikipedia.org/wiki/Matt_Damon#/media/Ficheiro:Matt_Damon_TIFF_2015.jpg"
                         }
-                    }
+                    },
+                    Photo = "https://pt.wikipedia.org/wiki/Ficheiro:Saving_Private_Ryan_poster.jpg"
                 },
                 new MovieEntity
                 {
@@ -78,7 +81,8 @@ namespace Infra
                             BirthDate = new DateTime(1981, 01, 28),
                             City = "Cedar Rapids",
                             State = "Iowa",
-                            Country = "Estados Unidos"
+                            Country = "Estados Unidos",
+                            Photo = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Elijah_Wood_%2847955397556%29_%28cropped%29.jpg"
                         },
                         new ActorEntity
                         {
@@ -87,9 +91,11 @@ namespace Infra
                             BirthDate = new DateTime(1939, 05, 25),
                             City = "Burnley",
                             State = "Lancashire",
-                            Country = "Reino Unido"
+                            Country = "Reino Unido",
+                            Photo = "https://pt.wikipedia.org/wiki/Ficheiro:Saving_Private_Ryan_poster.jpg"
                         }
-                    }
+                    },
+                    Photo = "https://pt.wikipedia.org/wiki/The_Lord_of_the_Rings:_The_Fellowship_of_the_Ring"
                 },
             };
 
