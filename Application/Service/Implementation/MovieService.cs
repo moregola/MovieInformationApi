@@ -16,11 +16,11 @@ namespace Application.Service.Implementation
             _movieRepository = movieRepository;
             _mapper = mapper;
         }
-        public async Task<bool> AddAsync(Movie actor)
+        public async Task<Movie> AddAsync(Movie actor)
         {
             var entity = _mapper.Map<MovieEntity>(actor);
             var response = await _movieRepository.AddAsync(entity);
-            return response is not null;
+            return _mapper.Map<Movie>(response);
         }
 
         public async Task<bool> DeleteAsync(Guid id)

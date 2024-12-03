@@ -23,11 +23,11 @@ namespace Application.Service.Implementation
             _mapper = mapper;
         }
 
-        public async Task<bool> AddAsync(MovieRating modelT)
+        public async Task<MovieRating> AddAsync(MovieRating modelT)
         {
             var entity = _mapper.Map<MovieRatingEntity>(modelT);
             var response = await _movieRatingRepository.AddAsync(entity);
-            return response is not null;
+            return  _mapper.Map<MovieRating>(response);
         }
 
         public async Task<bool> DeleteAsync(Guid id)

@@ -22,17 +22,25 @@ namespace Infra.BuildConfig
             modelBuilder.Entity<ActorEntity>()
                 .HasMany(a => a.Movies)
                 .WithMany(m => m.Actors)
-                .UsingEntity(t => t.ToTable("ActorMovies"));
+                .UsingEntity(t => t.ToTable("ActorMovies"))
+                .Property(a => a.CreateDate)
+                .HasDefaultValue(DateTime.Now);
 
             modelBuilder.Entity<MovieEntity>()
                 .HasMany(m => m.Actors)
                 .WithMany(a => a.Movies)
-                .UsingEntity(t => t.ToTable("ActorMovies"));
+                .UsingEntity(t => t.ToTable("ActorMovies"))
+                .Property(a => a.CreateDate)
+                .HasDefaultValue(DateTime.Now);
+            
+            modelBuilder.Entity<MovieEntity>()
+                .HasOne(m => m.MovieRating)
+                .WithOne(mr => mr.Movie)
+                .HasForeignKey<MovieRatingEntity>(mr => mr.MovieId);
 
             modelBuilder.Entity<MovieRatingEntity>()
-                .HasOne(m => m.Movie)
-                .WithMany()
-                .HasForeignKey(m => m.MovieId);
+                .Property(a => a.CreateDate)
+                .HasDefaultValue(DateTime.Now);
 
             base.OnModelCreating(modelBuilder);
         }

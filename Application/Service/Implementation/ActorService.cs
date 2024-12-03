@@ -16,11 +16,11 @@ namespace Application.Service.Implementation
             _mapper = mapper;
         }
 
-        public async Task<bool> AddAsync(Actor actor)
+        public async Task<Actor> AddAsync(Actor actor)
         {
             var entity = _mapper.Map<ActorEntity>(actor);
             var response = await _actorRepository.AddAsync(entity);
-            return response is not null;
+            return _mapper.Map<Actor>(response);
         }
 
         public async Task<bool> DeleteAsync(Guid id)

@@ -1,7 +1,11 @@
 ﻿using Application.Service.Interface;
+using AutoMapper;
 using Domain.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using MovieInformationApi.DTO;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MovieInformationApi.Controllers
 {
@@ -10,76 +14,116 @@ namespace MovieInformationApi.Controllers
     public class ActorController : ControllerBase
     {
         private readonly IActorService _actorService;
-        public ActorController(IActorService actorService)
+        private readonly IMapper _mapper;
+        public ActorController(IActorService actorService, IMapper mapper)
         {
             _actorService = actorService;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
+        [SwaggerResponse(200,"Response Success", typeof(SuccessResponseDTO<ActorDTO>))]
+        [SwaggerResponse(204, "Non Content")]
+        [SwaggerResponse(400, "Non Content",typeof(BadRequestResponseDTO))]
+        
         public async Task<IActionResult> Get(Guid id)
         {
             try
             {
                 var actor = await _actorService.GetAsync(id);
-                return new OkObjectResult(actor);
+                if (actor is null)
+                {
+                    return new NoContentResult();
+                }
+
+                var response = new SuccessResponseDTO<ActorDTO>
+                {
+                    Content = _mapper.Map<ActorDTO>(actor),
+                    Message = "Success"
+                };
+                return new OkObjectResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest("Call the Api Admin");
+                return new BadRequestObjectResult(new BadRequestResponseDTO { ErrorMessage = ex.Message });
             }
         }
 
         [HttpPost]
+        [Authorize]
+        [SwaggerResponse(200,"Response Success", typeof(SuccessResponseDTO<ActorDTO>))]
+        [SwaggerResponse(204, "Non Content")]
+        [SwaggerResponse(400, "BadRequest",typeof(BadRequestResponseDTO))]
         public async Task<IActionResult> Post([FromBody] ActorDTO actor)
         {
             try
             {
-                var actorModel = new Actor(Guid.NewGuid())
-                {
-                    Name = actor.Name,
-                };
-                await _actorService.AddAsync(actorModel);
-                return new OkObjectResult("ok");
+                var actorModel = _mapper.Map<Actor>(actor);
+                var actorResponse = await _actorService.AddAsync(actorModel);
 
+                if (actorResponse == null) throw new Exception("Failed to add actor");
+                
+                var response = new SuccessResponseDTO<ActorDTO>
+                {
+                    Content = _mapper.Map<ActorDTO>(actorResponse),
+                    Message = "Success"
+                };
+                return new OkObjectResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest("Call the Api Admin");
+                return new BadRequestObjectResult(new BadRequestResponseDTO { ErrorMessage = ex.Message });
             }
         }
 
         [HttpPut("{id}")]
+        [Authorize]
+        [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<SuccessStatusDTO>))]
+        [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
         public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] ActorDTO actor)
         {
             try
             {
-             
-                var actorModel = new Actor(id)
+                var actorModel = _mapper.Map<Actor>(actor);
+
+                var response = new SuccessResponseDTO<SuccessStatusDTO>
                 {
-                    Name = actor.Name,
+                    Content = new SuccessStatusDTO 
+                    { 
+                        Status = await _actorService.UpdateAsync(actorModel) 
+                    },
+                    Message = "Success"
                 };
 
-                await _actorService.UpdateAsync(actorModel);
-                return new OkObjectResult("ok");
-
+                return new OkObjectResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest("Call the Api Admin");
+                return new BadRequestObjectResult(new BadRequestResponseDTO { ErrorMessage = ex.Message });
             }
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
+        [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<SuccessStatusDTO>))]
+        [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             try
             {
-                var actor = await _actorService.DeleteAsync(id);
-                return new OkObjectResult(actor);
+                var response = new SuccessResponseDTO<SuccessStatusDTO>
+                {
+                    Content = new SuccessStatusDTO
+                    {
+                        Status = await _actorService.DeleteAsync(id)
+                    },
+                    Message = "Success"
+                };
+                return new OkObjectResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest("Call the Api Admin");
+                return new BadRequestObjectResult(new BadRequestResponseDTO { ErrorMessage = ex.Message });
             }
         }
     }

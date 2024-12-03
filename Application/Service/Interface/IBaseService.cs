@@ -6,7 +6,7 @@ namespace Application.Service.Interface
     {
         Task<T> GetAsync(Guid id);
         Task<IEnumerable<T>> GetAllAsync(int? pageSize, int? page);
-        Task<bool> AddAsync(T modelT);
+        Task<T> AddAsync(T modelT);
         Task<bool> UpdateAsync(T modelT);
         Task<bool> DeleteAsync(Guid id);
     }

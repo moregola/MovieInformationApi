@@ -9,5 +9,6 @@ namespace MovieInformationApi.DTO
         public Guid MovieId { get; set; }
         [Required]
         public float Rating { get; set; }
+        public MovieDTO Movie { get; set; }
     }
 }

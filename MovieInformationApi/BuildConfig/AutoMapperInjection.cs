@@ -2,6 +2,7 @@
 using Domain.Entity;
 using Domain.Model;
 using Microsoft.Extensions.DependencyInjection;
+using MovieInformationApi.DTO;
 
 namespace Infra.BuildConfig
 {
@@ -27,6 +28,16 @@ namespace Infra.BuildConfig
                 .ForMember(e => e.CreateDate, opt => opt.Ignore())
                 .ForMember(e => e.UpdateDate, opt => opt.Ignore())
                 .ReverseMap();
+
+                cfg.CreateMap<Actor, ActorDTO>()
+                .ReverseMap();
+
+                cfg.CreateMap<Movie, MovieDTO>()
+                .ReverseMap();
+
+                cfg.CreateMap<MovieRating, RatingDTO>()
+                .ReverseMap();
+
             });
 
             config.AssertConfigurationIsValid();
