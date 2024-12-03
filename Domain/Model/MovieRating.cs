@@ -11,7 +11,6 @@ namespace Domain.Model
         public Guid Id { get { return _Id; } }
         private Guid _Id { get; set; } = Guid.NewGuid();
         public Guid MovieId { get; set; } = Guid.Empty;
-        public Movie Movie { get; set; }
         public float Rating {  get; set; }
         public MovieRating(Guid id)
         {

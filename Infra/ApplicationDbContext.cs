@@ -33,11 +33,6 @@ namespace Infra.BuildConfig
                 .Property(a => a.CreateDate)
                 .HasDefaultValue(DateTime.Now);
             
-            modelBuilder.Entity<MovieEntity>()
-                .HasOne(m => m.MovieRating)
-                .WithOne(mr => mr.Movie)
-                .HasForeignKey<MovieRatingEntity>(mr => mr.MovieId);
-
             modelBuilder.Entity<MovieRatingEntity>()
                 .Property(a => a.CreateDate)
                 .HasDefaultValue(DateTime.Now);

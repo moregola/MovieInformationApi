@@ -9,7 +9,6 @@ namespace Domain.Entity
         public Guid Id { get; set; }
         [ForeignKey("MovieId")]
         public Guid MovieId { get; set; } = Guid.Empty;
-        public MovieEntity Movie { get; set; } = new MovieEntity();
         public float Rating {  get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; } = DateTime.Now;

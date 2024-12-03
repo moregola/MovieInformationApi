@@ -17,22 +17,12 @@ namespace Domain.Model
         private Guid _Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = string.Empty;
         public string Nationality { get; set; } = string.Empty;
-        public DateOnly BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
         public int Age { get; set; }
         public string State { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
-        public List<Movie> Movies { get; set; } = new List<Movie>();
-
-        public void AddMovie(Movie movie)
-        {
-            Movies.Add(movie);
-        }
-
-        public void RemoveMovie(Movie movie)
-        {
-            Movies.Remove(movie);
-        }
+        public ICollection<Movie> Movies { get; set; }
 
         public void CalculateAge()
         {

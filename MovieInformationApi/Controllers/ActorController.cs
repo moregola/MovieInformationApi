@@ -22,7 +22,7 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [SwaggerResponse(200,"Response Success", typeof(SuccessResponseDTO<ActorDTO>))]
+        [SwaggerResponse(200,"Response Success", typeof(SuccessResponseDTO<CompleteActorDTO>))]
         [SwaggerResponse(204, "Non Content")]
         [SwaggerResponse(400, "Non Content",typeof(BadRequestResponseDTO))]
         
@@ -36,9 +36,37 @@ namespace MovieInformationApi.Controllers
                     return new NoContentResult();
                 }
 
-                var response = new SuccessResponseDTO<ActorDTO>
+                var response = new SuccessResponseDTO<CompleteActorDTO>
                 {
-                    Content = _mapper.Map<ActorDTO>(actor),
+                    Content = _mapper.Map<CompleteActorDTO>(actor),
+                    Message = "Success"
+                };
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(new BadRequestResponseDTO { ErrorMessage = ex.Message });
+            }
+        }
+        
+        [HttpGet("all")]
+        [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<CompleteActorDTO>))]
+        [SwaggerResponse(204, "Non Content")]
+        [SwaggerResponse(400, "Non Content", typeof(BadRequestResponseDTO))]
+
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var actors = await _actorService.GetAllAsync(10,1);
+                if (actors is null)
+                {
+                    return new NoContentResult();
+                }
+
+                var response = new SuccessResponseDTO<IEnumerable<CompleteActorDTO>>
+                {
+                    Content = actors.Select(a => _mapper.Map<CompleteActorDTO>(a)),
                     Message = "Success"
                 };
                 return new OkObjectResult(response);
@@ -50,22 +78,41 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpPost]
-        [Authorize]
-        [SwaggerResponse(200,"Response Success", typeof(SuccessResponseDTO<ActorDTO>))]
+        [SwaggerResponse(200,"Response Success", typeof(SuccessResponseDTO<CompleteActorDTO>))]
         [SwaggerResponse(204, "Non Content")]
         [SwaggerResponse(400, "BadRequest",typeof(BadRequestResponseDTO))]
-        public async Task<IActionResult> Post([FromBody] ActorDTO actor)
+        public async Task<IActionResult> Post([FromBody] CompleteActorDTO actor)
         {
             try
             {
-                var actorModel = _mapper.Map<Actor>(actor);
+                var actorModel = new Actor(Guid.NewGuid())
+                { 
+                    Age = actor.Age,
+                    BirthDate = actor.BirthDate,
+                    State = actor.State,
+                    City = actor.City,
+                    Country = actor.Country,
+                    Movies = actor.Movies.Select(m => 
+                        new Movie(Guid.NewGuid())
+                        {
+                            Description = m.Description,
+                            Director = m.Director,
+                            Genre = m.Genre,
+                            MovieRating = new MovieRating(Guid.NewGuid()) { Rating = m.MovieRating.Rating},
+                            Producer = m.Producer,
+                            ReleaseDate = m.ReleaseDate,
+                            Title = m.Title
+                        }).ToList(),
+                    Name = actor.Name,
+                    Nationality = actor.Nationality
+                };
                 var actorResponse = await _actorService.AddAsync(actorModel);
 
                 if (actorResponse == null) throw new Exception("Failed to add actor");
                 
-                var response = new SuccessResponseDTO<ActorDTO>
+                var response = new SuccessResponseDTO<CompleteActorDTO>
                 {
-                    Content = _mapper.Map<ActorDTO>(actorResponse),
+                    Content = _mapper.Map<CompleteActorDTO>(actorResponse),
                     Message = "Success"
                 };
                 return new OkObjectResult(response);
@@ -77,10 +124,9 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<SuccessStatusDTO>))]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
-        public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] ActorDTO actor)
+        public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] CompleteActorDTO actor)
         {
             try
             {
@@ -104,7 +150,6 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<SuccessStatusDTO>))]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
         public async Task<IActionResult> Delete([FromRoute] Guid id)

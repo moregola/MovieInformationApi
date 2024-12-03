@@ -22,8 +22,8 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
-        [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<MovieDTO>))]
+        
+        [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<CompleteMovieDTO>))]
         [SwaggerResponse(204, "Non Content")]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
         public async Task<IActionResult> Get(Guid id)
@@ -37,9 +37,9 @@ namespace MovieInformationApi.Controllers
                     return new NoContentResult();
                 }
                 
-                var response = new SuccessResponseDTO<MovieDTO>
+                var response = new SuccessResponseDTO<CompleteMovieDTO>
                 {
-                    Content = _mapper.Map<MovieDTO>(movie),
+                    Content = _mapper.Map<CompleteMovieDTO>(movie),
                     Message = "Movie found"
                 };
                 return new OkObjectResult(response);
@@ -50,22 +50,71 @@ namespace MovieInformationApi.Controllers
             }
         }
 
-        [HttpPost]
-        [Authorize]
-        [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<MovieDTO>))]
+        [HttpGet("all")]
+        
+        [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<CompleteMovieDTO>))]
+        [SwaggerResponse(204, "Non Content")]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
-        public async Task<IActionResult> Post([FromBody] MovieDTO movie)
+        public async Task<IActionResult> GetAll()
         {
             try
             {
-                var movieModel = _mapper.Map<Movie>(movie);
+                var movies = await _movieService.GetAllAsync(10,1);
+
+                if (movies is null)
+                {
+                    return new NoContentResult();
+                }
+
+                var response = new SuccessResponseDTO<IEnumerable<CompleteMovieDTO>>
+                {
+                    Content = movies.Select(movie => _mapper.Map<CompleteMovieDTO>(movie)),
+                    Message = "Movie found"
+                };
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(new BadRequestResponseDTO { ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        
+        [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<CompleteMovieDTO>))]
+        [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
+        public async Task<IActionResult> Post([FromBody] CompleteMovieDTO movie)
+        {
+            try
+            {
+                var movieModel = new Movie(Guid.NewGuid())
+                {
+                    Description = movie.Description,
+                    Director = movie.Director,
+                    Genre = movie.Genre,
+                    MovieRating = new MovieRating(Guid.NewGuid())
+                    {
+                        Rating = movie.MovieRating.Rating
+                    },
+                    Producer = movie.Producer,
+                    Actors = movie.Actors.Select(actor => new Actor(Guid.NewGuid())
+                    {
+                        Name = actor.Name,
+                        BirthDate = actor.BirthDate,
+                        Age = actor.Age,
+                        City = actor.City,
+                        Country = actor.Country,
+                        Nationality = actor.Nationality,
+                        State = actor.State
+                    }).ToList()
+                };
                 var movieResponse = await _movieService.AddAsync(movieModel);
                 
                 if(movieResponse is null) return new BadRequestObjectResult(new BadRequestResponseDTO { ErrorMessage = "Movie not added" });
                 
-                var response = new SuccessResponseDTO<MovieDTO>
+                var response = new SuccessResponseDTO<CompleteMovieDTO>
                 {
-                    Content = _mapper.Map<MovieDTO>(movie),
+                    Content = _mapper.Map<CompleteMovieDTO>(movie),
                     Message = "Success"
                 };
 
@@ -79,10 +128,10 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<SuccessStatusDTO>))]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
-        public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] MovieDTO movie)
+        public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] CompleteMovieDTO movie)
         {
             try
             {
@@ -105,7 +154,7 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<SuccessStatusDTO>))]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
         public async Task<IActionResult> Delete([FromRoute] Guid id)

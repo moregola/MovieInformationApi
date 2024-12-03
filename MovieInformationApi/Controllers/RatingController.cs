@@ -22,7 +22,7 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<RatingDTO>))]
         [SwaggerResponse(204, "Non Content")]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
@@ -52,7 +52,7 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<RatingDTO>))]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
         public async Task<IActionResult> Post([FromBody] RatingDTO movieRating)
@@ -77,7 +77,6 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpGet("movie/{id}")]
-        [Authorize]
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<RatingDTO>))]
         [SwaggerResponse(204, "Non Content")]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
