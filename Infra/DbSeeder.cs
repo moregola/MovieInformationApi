@@ -27,18 +27,16 @@ namespace Infra
             }
 
             // Sample movie data
-            var movies = new List<MovieEntity>()
+            var movie0 = new MovieEntity
             {
-                new MovieEntity
-                {
-                    Title = "O Resgate do Soldado Ryan",
-                    Genre = "Guerra",
-                    Director = "Steven Spielberg",
-                    Producer = "Mark Gordon",
-                    ReleaseDate = new DateTime(1998, 07, 24),
-                    Description = "Um grupo de soldados norte-americanos é enviado a uma missão perigosa para resgatar um paraquedista que está atrás das linhas inimigas.",
-                    MovieRating = new MovieRatingEntity { Rating = 8.6f },
-                    Actors = new List<ActorEntity>
+                Title = "O Resgate do Soldado Ryan",
+                Genre = "Guerra",
+                Director = "Steven Spielberg",
+                Producer = "Mark Gordon",
+                ReleaseDate = new DateTime(1998, 07, 24),
+                Description = "Um grupo de soldados norte-americanos é enviado a uma missão perigosa para resgatar um paraquedista que está atrás das linhas inimigas.",
+                MovieRating = new MovieRatingEntity { Rating = 8.6f },
+                Actors = new List<ActorEntity>
                     {
                         new ActorEntity
                         {
@@ -61,18 +59,18 @@ namespace Infra
                             Photo = "https://pt.wikipedia.org/wiki/Matt_Damon#/media/Ficheiro:Matt_Damon_TIFF_2015.jpg"
                         }
                     },
-                    Photo = "https://pt.wikipedia.org/wiki/Ficheiro:Saving_Private_Ryan_poster.jpg"
-                },
-                new MovieEntity
-                {
-                    Title = "O Senhor dos Anéis: A Sociedade do Anel",
-                    Genre = "Fantasia",
-                    Director = "Peter Jackson",
-                    Producer = "Peter Jackson",
-                    ReleaseDate = new DateTime(2001, 12, 19),
-                    Description = "Uma jornada épica para destruir o Um Anel e salvar a Terra Média.",
-                    MovieRating = new MovieRatingEntity { Rating = 8.8f },
-                    Actors = new List<ActorEntity>
+                Photo = "https://pt.wikipedia.org/wiki/Ficheiro:Saving_Private_Ryan_poster.jpg"
+            };
+            var movie1 = new MovieEntity
+            {
+                Title = "O Senhor dos Anéis: A Sociedade do Anel",
+                Genre = "Fantasia",
+                Director = "Peter Jackson",
+                Producer = "Peter Jackson",
+                ReleaseDate = new DateTime(2001, 12, 19),
+                Description = "Uma jornada épica para destruir o Um Anel e salvar a Terra Média.",
+                MovieRating = new MovieRatingEntity { Rating = 8.8f },
+                Actors = new List<ActorEntity>
                     {
                         new ActorEntity
                         {
@@ -95,12 +93,13 @@ namespace Infra
                             Photo = "https://pt.wikipedia.org/wiki/Ficheiro:Saving_Private_Ryan_poster.jpg"
                         }
                     },
-                    Photo = "https://pt.wikipedia.org/wiki/The_Lord_of_the_Rings:_The_Fellowship_of_the_Ring"
-                },
+                Photo = "https://pt.wikipedia.org/wiki/The_Lord_of_the_Rings:_The_Fellowship_of_the_Ring"
             };
-
             // Add movies to the database context
-            _context.Movies.AddRange(movies);
+            _context.Entry(movie0);
+            _context.Entry(movie1);
+            _context.Movies.AddAsync(movie0);
+            _context.Movies.AddAsync(movie1);
 
             // Save changes to the database
             _context.SaveChanges();

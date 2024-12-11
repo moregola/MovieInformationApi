@@ -66,15 +66,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
-
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.Use(async (context, next) =>
 {
-    var providedKey = context.Request.Headers["Authorization"].FirstOrDefault();
+    var providedKey = context.Request.Headers["Authorization"];
 
     if (!new Authorization().IsAuthenticated(providedKey))
     {

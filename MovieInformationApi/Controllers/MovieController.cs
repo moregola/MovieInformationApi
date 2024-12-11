@@ -22,7 +22,6 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpGet("{id}")]
-        
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<CompleteMovieDTO>))]
         [SwaggerResponse(204, "Non Content")]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
@@ -51,7 +50,6 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpGet("all")]
-        
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<CompleteMovieDTO>))]
         [SwaggerResponse(204, "Non Content")]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
@@ -59,7 +57,7 @@ namespace MovieInformationApi.Controllers
         {
             try
             {
-                var movies = await _movieService.GetAllAsync(10,1);
+                var movies = await _movieService.GetAllAsync(10,0);
 
                 if (movies is null)
                 {
@@ -68,7 +66,7 @@ namespace MovieInformationApi.Controllers
 
                 var response = new SuccessResponseDTO<IEnumerable<CompleteMovieDTO>>
                 {
-                    Content = movies.Select(movie => _mapper.Map<CompleteMovieDTO>(movie)),
+                    Content = movies.Select(movie => _mapper.Map<CompleteMovieDTO>(movie)).ToList(),
                     Message = "Movie found"
                 };
                 return new OkObjectResult(response);
@@ -80,7 +78,6 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpPost]
-        
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<CompleteMovieDTO>))]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
         public async Task<IActionResult> Post([FromBody] CompleteMovieDTO movie)
@@ -128,7 +125,6 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpPut("{id}")]
-        
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<SuccessStatusDTO>))]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
         public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] CompleteMovieDTO movie)
@@ -154,7 +150,6 @@ namespace MovieInformationApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        
         [SwaggerResponse(200, "Response Success", typeof(SuccessResponseDTO<SuccessStatusDTO>))]
         [SwaggerResponse(400, "BadRequest", typeof(BadRequestResponseDTO))]
         public async Task<IActionResult> Delete([FromRoute] Guid id)

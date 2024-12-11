@@ -1,6 +1,7 @@
 ﻿using Domain.Entity;
 using Infra.BuildConfig;
 using Infra.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,11 @@ namespace Infra.Repository.Implementation
 
         public async Task<IEnumerable<MovieEntity>> GetAllAsync(int? pageSize, int? page)
         {
-            return _context.Movies.Skip(page ?? 0).Take(pageSize ?? 10);
+            return _context.Movies
+                .Include(m => m.Actors)
+                .AsNoTracking()
+                .Skip(page ?? 0)
+                .Take(pageSize ?? 10);
         }
 
         public async Task<MovieEntity> GetByIdAsync(Guid id)

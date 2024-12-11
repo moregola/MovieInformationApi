@@ -20,17 +20,35 @@ namespace Infra.BuildConfig
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ActorEntity>()
-                .HasMany(a => a.Movies)
-                .WithMany(m => m.Actors)
-                .UsingEntity(t => t.ToTable("ActorMovies"))
-                .Property(a => a.CreateDate)
-                .HasDefaultValue(DateTime.Now);
+           .HasMany(a => a.Movies)
+           .WithMany(m => m.Actors)
+           .UsingEntity<Dictionary<string, object>>(
+               "ActorMovies",
+               j => j
+                   .HasOne<MovieEntity>()
+                   .WithMany()
+                   .HasForeignKey("MovieId"),
+               j => j
+                   .HasOne<ActorEntity>()
+                   .WithMany()
+                   .HasForeignKey("ActorId"))
+           .Property<DateTime>("CreateDate")
+           .HasDefaultValueSql("GETDATE()");
 
             modelBuilder.Entity<MovieEntity>()
                 .HasMany(m => m.Actors)
                 .WithMany(a => a.Movies)
-                .UsingEntity(t => t.ToTable("ActorMovies"))
-                .Property(a => a.CreateDate)
+                .UsingEntity<Dictionary<string, object>>(
+               "ActorMovies",
+               j => j
+                   .HasOne<ActorEntity>()
+                   .WithMany()
+                   .HasForeignKey("MovieId"),
+               j => j
+                   .HasOne<MovieEntity>()
+                   .WithMany()
+                   .HasForeignKey("ActorId"))
+                .Property<DateTime>("CreateDate")
                 .HasDefaultValue(DateTime.Now);
             
             modelBuilder.Entity<MovieRatingEntity>()
