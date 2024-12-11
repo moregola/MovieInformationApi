@@ -46,7 +46,7 @@ namespace Infra
                             City = "Concord",
                             State = "Califórnia",
                             Country = "Estados Unidos",
-                            Photo = "https://pt.wikipedia.org/wiki/Tom_Hanks#/media/Ficheiro:Tom_Hanks_2016.jpg"
+                            Photo = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Tom_Hanks_2016.jpg/1024px-Tom_Hanks_2016.jpg"
                         },
                         new ActorEntity
                         {
@@ -56,10 +56,10 @@ namespace Infra
                             City = "Boston",
                             State = "Massachusetts",
                             Country = "Estados Unidos",
-                            Photo = "https://pt.wikipedia.org/wiki/Matt_Damon#/media/Ficheiro:Matt_Damon_TIFF_2015.jpg"
+                            Photo = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Matt_Damon_TIFF_2015.jpg/800px-Matt_Damon_TIFF_2015.jpg"
                         }
                     },
-                Photo = "https://pt.wikipedia.org/wiki/Ficheiro:Saving_Private_Ryan_poster.jpg"
+                Photo = "https://upload.wikimedia.org/wikipedia/pt/a/ac/Saving_Private_Ryan_poster.jpg"
             };
             var movie1 = new MovieEntity
             {
@@ -90,10 +90,10 @@ namespace Infra
                             City = "Burnley",
                             State = "Lancashire",
                             Country = "Reino Unido",
-                            Photo = "https://pt.wikipedia.org/wiki/Ficheiro:Saving_Private_Ryan_poster.jpg"
+                            Photo = "https://upload.wikimedia.org/wikipedia/commons/1/15/SDCC13_-_Ian_McKellen.jpg"
                         }
                     },
-                Photo = "https://pt.wikipedia.org/wiki/The_Lord_of_the_Rings:_The_Fellowship_of_the_Ring"
+                Photo = "https://upload.wikimedia.org/wikipedia/pt/3/38/Lord_of_the_Rings_Fellowship_of_the_Ring.jpg"
             };
             // Add movies to the database context
             _context.Entry(movie0);

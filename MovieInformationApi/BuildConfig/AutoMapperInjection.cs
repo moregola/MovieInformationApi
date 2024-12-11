@@ -30,11 +30,13 @@ namespace Infra.BuildConfig
                 .ReverseMap();
 
                 cfg.CreateMap<Actor, ActorDTO>()
+                .ForMember(e => e.Age, opt => opt.MapFrom<int>(e => e.CalculateAge()))
                 .ReverseMap()
                 .ForMember(e => e.Id, opt => opt.Ignore())
                 .ForMember(e => e.Movies, opt => opt.Ignore());
 
                 cfg.CreateMap<Actor, CompleteActorDTO>()
+                .ForMember(e => e.Age, opt => opt.MapFrom<int>(e => e.CalculateAge()))
                 .ReverseMap();
                 
                 cfg.CreateMap<Movie, MovieDTO>()

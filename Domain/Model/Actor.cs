@@ -11,6 +11,7 @@ namespace Domain.Model
         public Actor(Guid id)
         {
             _Id = id;
+            CalculateAge();
         }
 
         public Guid Id { get { return _Id; } }
@@ -24,9 +25,9 @@ namespace Domain.Model
         public string Country { get; set; } = string.Empty;
         public ICollection<Movie> Movies { get; set; }
 
-        public void CalculateAge()
+        public int CalculateAge()
         {
-            Age = (DateTime.Now.Year - BirthDate.Year) 
+            return Age = (DateTime.Now.Year - BirthDate.Year) 
                 + (DateTime.Now.Month - BirthDate.Month > 0 ? 0 : -1);
         }
         public string Photo { get; set; } = string.Empty;
