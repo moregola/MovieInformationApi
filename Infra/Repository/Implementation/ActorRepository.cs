@@ -43,7 +43,7 @@ namespace Infra.Repository.Implementation
 
         public async Task<ActorEntity> GetByIdAsync(Guid id)
         {
-            return await _context.FindAsync<ActorEntity>(id) ?? throw new Exception("Invalid ID Actor not found");
+            return await _context.Actors.Include(a => a.Movies).AsNoTracking().FirstOrDefaultAsync(a => a.Id == id) ?? throw new Exception("Invalid ID Actor not found");
         }
 
         public async Task<bool> UpdateAsync(ActorEntity entity)

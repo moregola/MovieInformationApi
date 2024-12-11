@@ -45,7 +45,7 @@ namespace Infra.Repository.Implementation
 
         public async Task<MovieEntity> GetByIdAsync(Guid id)
         {
-            return await _context.FindAsync<MovieEntity>(id) ?? throw new Exception("Invalid ID Movie not found");
+            return await _context.Movies.Include(m => m.Actors).AsNoTracking().FirstOrDefaultAsync(m => m.Id == id) ?? throw new Exception("Invalid ID Movie not found");
         }
 
         public async Task<bool> UpdateAsync(MovieEntity entity)
